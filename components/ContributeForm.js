@@ -12,7 +12,7 @@ class ContributeForm extends Component {
     this.state = {
       value: "",
       loading: false,
-      errorMessage: "",
+      errorMessage: ""
     };
   }
 
@@ -21,7 +21,7 @@ class ContributeForm extends Component {
     event.preventDefault();
     const campaign = Campaign(this.props.address);
 
-    //this.setState({ loading: true });
+    this.setState({ loading: true, errorMessage: "" });
 
     // methods.contribute()
     try {
@@ -33,16 +33,16 @@ class ContributeForm extends Component {
 
       // Refresh, damit neue Daten in Cards upgedatet werden
       Router.replaceRoute(`/campaigns/${this.props.address}`);
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    }
 
-    } catch (err) {}
-
-    //this.setState({ loading: false });
-    Router.pushRoute(`/campaigns/${this.props.address}`);
+    this.setState({ loading: false, value: "" });
   };
 
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
         <Form.Field>
           <label>Amount to Contribute</label>
 
@@ -53,10 +53,17 @@ class ContributeForm extends Component {
             onChange={event => this.setState({ value: event.target.value })}
           />
 
-          <Button primary loading={this.state.loading}>
-            Contribute
-          </Button>
         </Form.Field>
+
+        <Message
+          error
+          header="There was some errors with your submission"
+          content={this.state.errorMessage}
+        />
+
+        <Button primary loading={this.state.loading}>
+          Contribute
+        </Button>
       </Form>
     );
   }
