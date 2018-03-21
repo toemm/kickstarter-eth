@@ -27,8 +27,6 @@ class RequestIndex extends Component {
         })
     );
 
-    console.log(requests);
-
     return {
       campaignAddress: address,
       requests: requests,
@@ -59,7 +57,9 @@ class RequestIndex extends Component {
         <h3>Pending Requests</h3>
         <Link route={`/campaigns/${this.props.campaignAddress}/requests/new`}>
           <a>
-            <Button primary>Add Request</Button>
+            <Button primary floated="right" style={{ marginBottom: 10 }}>
+              Add Request
+            </Button>
           </a>
         </Link>
 
@@ -76,11 +76,9 @@ class RequestIndex extends Component {
             </Row>
           </Header>
 
-          <Body>
-            {this.renderRows()}
-          </Body>
-
+          <Body>{this.renderRows()}</Body>
         </Table>
+          <div>Found {this.props.requestLength} Request(s)</div>
       </Layout>
     );
   }
